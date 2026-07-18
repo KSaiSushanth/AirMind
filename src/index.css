@@ -1,0 +1,210 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Syne:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* ── Strata palette ── */
+  --color-basin:            #0A0E17;
+  --color-boundary:         #2D1B4E;
+  --color-clean-air:        #A8E06C;
+  --color-inversion:        #FFB627;
+  --color-hazard:           #E85D04;
+  --color-critical:         #DC2F02;
+  --color-wind:             #48CAE4;
+
+  /* Surface system */
+  --color-surface-base:     #0A0E17;
+  --color-surface-elevated: #111827;
+  --color-surface-card:     #1a2540;
+  --color-surface-muted:    #1E2A42;
+
+  /* Text */
+  --color-text-primary:     #E8EDF5;
+  --color-text-secondary:   #8B9BB4;
+  --color-text-muted:       #5A6A82;
+
+  /* Typography */
+  --font-display: 'Syne', system-ui, sans-serif;
+  --font-body:    'IBM Plex Mono', ui-monospace, monospace;
+  --font-mono:    'IBM Plex Mono', ui-monospace, monospace;
+}
+
+/* ── CSS custom properties (outside @theme — rgba allowed here) ── */
+:root {
+  --color-border-subtle:    rgba(255, 255, 255, 0.09);
+  --color-border-hover:     rgba(72, 202, 228, 0.35);
+  --shadow-strata:          0 0 0 1px rgba(255,255,255,0.04), 0 8px 32px -8px rgba(0,0,0,0.7);
+  --shadow-strata-hover:    0 0 0 1px rgba(72,202,228,0.2), 0 12px 40px -8px rgba(0,0,0,0.8);
+  --shadow-card:            0 4px 16px -4px rgba(0,0,0,0.5);
+  --shadow-card-hover:      0 8px 24px -4px rgba(0,0,0,0.6);
+}
+
+/* ── Base ── */
+@layer base {
+  body {
+    background-color: #0A0E17;
+    color: #E8EDF5;
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Syne', system-ui, sans-serif;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+  }
+}
+
+/* ── Strata panels ── */
+.strata-panel {
+  background: linear-gradient(165deg, rgba(26,37,64,0.95) 0%, rgba(17,24,39,0.95) 100%);
+  border: 1px solid rgba(255,255,255,0.09);
+  box-shadow: var(--shadow-strata);
+}
+
+.strata-panel-strong {
+  background: linear-gradient(180deg, rgba(17,24,39,0.97) 0%, rgba(10,14,23,0.99) 100%);
+  border: 1px solid rgba(255,255,255,0.07);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.glass-panel        { @apply strata-panel; }
+.glass-panel-strong { @apply strata-panel-strong; }
+
+/* ── Typography helpers ── */
+.text-gradient {
+  background: linear-gradient(135deg, #E8EDF5 0%, #8B9BB4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-accent {
+  background: linear-gradient(135deg, #48CAE4 0%, #A8E06C 60%, #FFB627 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-wind {
+  background: linear-gradient(135deg, #48CAE4 0%, #A8E06C 50%, #FFB627 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.font-data {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── AQI-reactive shell ── */
+.strata-shell {
+  --aqi-color: #A8E06C;
+  --aqi-glow:  rgba(168,224,108,0.35);
+  --aqi-muted: rgba(168,224,108,0.12);
+  --aqi-pulse: 3200ms;
+}
+
+.strata-shell-topbar {
+  box-shadow: inset 0 -1px 0 rgba(255,255,255,0.06), 0 0 40px -10px var(--aqi-glow);
+}
+
+.strata-nav-active {
+  background: linear-gradient(90deg, var(--aqi-muted, rgba(72,202,228,0.1)) 0%, transparent 100%);
+  border-color: color-mix(in srgb, var(--aqi-color, #48CAE4) 35%, transparent) !important;
+  box-shadow: inset 3px 0 0 var(--aqi-color, #48CAE4);
+}
+
+.nav-active-glow { box-shadow: inset 3px 0 0 var(--aqi-color, #48CAE4); }
+
+/* ── Animations ── */
+@keyframes wind-drift {
+  0%   { transform: translateX(-120%); opacity: 0; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { transform: translateX(110vw); opacity: 0; }
+}
+.wind-stream {
+  animation: wind-drift linear infinite;
+  will-change: transform;
+}
+
+@keyframes aqi-breathe {
+  0%, 100% { transform: scale(1);    opacity: 0.75; }
+  50%       { transform: scale(1.06); opacity: 1;    }
+}
+.aqi-ring-pulse {
+  animation: aqi-breathe var(--aqi-pulse, 3200ms) ease-in-out infinite;
+}
+
+@keyframes inversion-sink {
+  0%, 100% { opacity: 0.12; transform: translateY(-4%); }
+  50%       { opacity: 0.30; transform: translateY(0);   }
+}
+.inversion-curtain {
+  animation: inversion-sink 8s ease-in-out infinite;
+}
+
+@keyframes radar-sweep {
+  0%   { transform: rotate(0deg);   opacity: 0.5; }
+  80%  { transform: rotate(360deg); opacity: 0.15; }
+  100% { transform: rotate(360deg); opacity: 0;    }
+}
+.radar-sweep {
+  animation: radar-sweep 3s ease-out forwards;
+}
+
+@keyframes strata-drift {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+.strata-layer {
+  animation: strata-drift 12s ease-in-out infinite;
+}
+
+@keyframes ambient-float {
+  0%, 100% { transform: scale(1) translateY(0);     opacity: 0.8; }
+  50%       { transform: scale(1.1) translateY(-20px); opacity: 1; }
+}
+.animate-ambient         { animation: ambient-float 18s ease-in-out infinite; }
+.animate-ambient-delayed { animation: ambient-float 22s ease-in-out 4s infinite; }
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.02) 25%,
+    rgba(72,202,228,0.06)  50%,
+    rgba(255,255,255,0.02) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+/* ── Leaflet ── */
+.leaflet-tile-container {
+  filter: invert(100%) hue-rotate(195deg) brightness(88%) contrast(92%) saturate(0.7);
+}
+.leaflet-container {
+  background: #0A0E17 !important;
+  border-radius: 12px;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar       { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.10); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(72,202,228,0.3); }
+
+/* ── Selection ── */
+::selection {
+  background: rgba(72,202,228,0.22);
+  color: #E8EDF5;
+}
