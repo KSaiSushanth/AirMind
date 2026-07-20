@@ -47,3 +47,50 @@ airmind/
     ├── pages/               # Dashboard, AirMap, Simulation, Forecast, Analytics, Copilot, Citizen
     ├── index.css            # Tailwind v4 configuration and global typography (Inter/Jakarta)
     └── main.tsx             # Application entry point
+
+🛠️ Installation & Setup
+1. Prerequisites
+Node.js (v18+)
+Python (3.11+)
+Google Gemini API Key (Optional; fallback offline mode is enabled by default)
+2. Backend Setup
+Navigate to the backend directory:
+bash
+
+
+cd backend
+Create a virtual environment and activate it:
+bash
+
+
+python -m venv venv
+# Windows:
+venv\Scripts\activate
+# macOS/Linux:
+source venv/bin/activate
+Install dependencies:
+bash
+
+
+pip install -r requirements.txt
+Run the development server:
+bash
+
+
+uvicorn app.main:app --reload --port 8000
+3. Frontend Setup
+Navigate to the project root directory:
+bash
+
+
+npm install
+Run the development environment:
+bash
+
+
+npm run dev
+Open http://localhost:5173 in your browser.
+🔬 Tech Stack
+Frontend: React 19, Vite, Tailwind CSS v4, Recharts, Lucide Icons, Leaflet GIS.
+Backend: Python 3.12, FastAPI, XGBoost, Scikit-Learn.
+LLM Context: Google Gemini API SDK (Retrieval-Augmented Prompt Injection).
